@@ -1,5 +1,5 @@
 ##################################################################################
-## Applies trend correction  based on iterative polynomial interpolation (Gan, 	##
+## Applies trend correction  based on iterative polynomial interpolation (Gan,	##
 ## Ruan & Mo, 2006, Chemometrics Intel. Lab. Sys.). Implemented in R version    ##
 ## 3.0.2. Fuks 150328                                                           ##
 ##################################################################################
