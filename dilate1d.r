@@ -1,7 +1,7 @@
 ###############################################################################
 ## One dimensional morphological dilation based on the structural element    ## 
 ## 'se'. Mirror boundary conditions. Implemented in R version 3.0.2.         ##
-## Fuks 150328    			                                                     ##
+## Fuks 150328    			                                                ##
 ###############################################################################
 
 source("mirrorbound.r") # Padds data boundaries
