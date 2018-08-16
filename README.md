@@ -19,4 +19,24 @@ int_data <- read.table("peaks_test.csv", sep = ";", dec = ",")
 plot(int_data$V3, main = "Flourescence intensity over time", ylab = "Intensity (a.u.)", xlab = "Time (s)")
 ```
 
-![plot2]https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot01.png)
+![plot2](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot01.png)
+
+Next, we go through the approaches one by one, starting with the mean filter, essentially a classic low-pass filter. We need to specify the size of the filter kernel (matrix) that decides how rapid changes will be filtered and will of course depend on the data set. To illustrate we try 3 different values.
+```
+source("mirrorbound.r") # Call the boundary condition routine
+source("statfilt.r") # Mean and median filters
+filt_data1 <- statfilt(sa_data$IRLTLT01ZAM156N, 10, 1) #Applies the mean filter
+filt_data2 <- statfilt(sa_data$IRLTLT01ZAM156N, 50, 1)  
+filt_data3 <- statfilt(sa_data$IRLTLT01ZAM156N, 150, 1)
+
+plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", main = "Kernel size 10", ylab = "Percent", xlab = "Month") #Plots original data
+points(filt_data1[,2], col = "red", pch = 16, type = "l") 
+plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", main = "Kernel size 50", ylab = "Percent", xlab = "Month") 
+points(filt_data2[,2], col = "red", pch = 16, type = "l")
+plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", main = "Kernel size 150", ylab = "Percent", xlab = "Month")
+points(filt_data3[,2], col = "red", pch = 16, type = "l")
+```
+
+![plot3](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot02.png)
+![plot4](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot03.png)
+![plot5](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot04.png)
