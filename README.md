@@ -11,5 +11,5 @@ sa_data <- read.table("sa_lt_govt_bond_yields.csv", sep = ",", header = T)
 plot(sa_data$IRLTLT01ZAM156N, type = "l", main = "LT Government Bond Yields, South Africa, 1960-2018", ylab = "Percent", xlab = "Month")
 ```
 
-[!plot1](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot.png)
+![plot1](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot.png)
 
