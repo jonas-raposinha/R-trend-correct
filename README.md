@@ -13,3 +13,10 @@ plot(sa_data$IRLTLT01ZAM156N, type = "l", main = "LT Government Bond Yields, Sou
 
 ![plot1](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot.png)
 
+The second one is (slightly altered) experimental data on flourescence intensity over time with a varying baseline. Our interest in this case is the intensity peaks.
+```
+int_data <- read.table("peaks_test.csv", sep = ";", dec = ",")
+plot(int_data$V3, main = "Flourescence intensity over time", ylab = "Intensity (a.u.)", xlab = "Time (s)")
+```
+
+![plot2]https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot01.png)
