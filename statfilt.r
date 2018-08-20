@@ -16,12 +16,12 @@ statfilt <- function(indata, filtsize, choice){
   switch(choice, # Implements choice of filter
   	meanfilt={
   		for(m in 1:ndata){
-  		trend[m] <- mean(filtdata[m:(m + 2*sesize)]) # Applies mean filter
+  		trend[m] <- mean(filtdata[m:(m + 2*sesize)], na.rm = T) # Applies mean filter
   		}
   	},
   	medianfilt={
   		for(m in 1:ndata){
-  		trend[m] <- median(filtdata[m:(m + 2*sesize)]) # Applies median filter
+  		trend[m] <- median(filtdata[m:(m + 2*sesize)], na.rm = T) # Applies median filter
   		}
   	},
   	stop("error: invalid choice of filter")
