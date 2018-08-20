@@ -15,7 +15,7 @@ dilate1d <- function(indata, se){
 
   outdata <- vector("numeric", ndata)
   for(m in 1:ndata){
-    outdata[m] <- max(filtdata[m:(m + 2*sesize)]) #Calculates dilation
+    outdata[m] <- max(filtdata[m:(m + 2*sesize)], na.rm = T) #Calculates dilation
   }
 
   return(outdata)
