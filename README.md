@@ -116,8 +116,7 @@ points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2) #Plots the ex
 ![plot8](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/8.png)
 
 Firstly, this approach produces beautifully smooth curves, since they are based on polynomials. We can also observe what is sometimes a significant drawback of this approach though, termed Runge's phenomenon, i.e. oscillations at the edges produced by high order polynomials. This is annoying since those are typically needed to fit complex data, as seen when comparing the two examples above. 
-
-To solve this, we can use interpolating splines (piecewise interpolation of lower degree polynomials, typically cubic). Fortunately, R has an implementation of smoothing splines, which differ from regular splines by a roughness penalty, typically based on the second derivative of the data set. The interested reader is referred to more advanced splines-based methods, e.g. the Hodrick-Prescott filter.
+To solve this, we can use interpolating splines (piecewise interpolation of lower degree polynomials, typically cubic). Fortunately, R has an implementation of smoothing splines, which differ from regular splines by a roughness penalty, typically based on the second derivative of the data set. The interested reader is also referred to more advanced splines-based methods, e.g. the Hodrick-Prescott filter.
 
 ```
 filt_data <- smooth.spline(sa_data$IRLTLT01ZAM156N, spar = 0.7) #cubic smoothing splines
