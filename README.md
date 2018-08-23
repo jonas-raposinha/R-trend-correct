@@ -97,7 +97,7 @@ points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2)
 
 ![plot7](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/7.png)
 
-Here, the median filter performance is closer to that of the mean. It does perhaps not catch the shape of the curve quite as nicely, fares slightly better in regions with large variation.
+Here, the median filter performance is closer to that of the mean. It does perhaps not catch the shape of the curve quite as nicely, but fares slightly better in regions with large variation.
 A nice discussion on median filters (for image processing, which I find sometimes makes for more pedagogical presentations) can be found in [(Peng, Seminar report, 2004)](http://www.massey.ac.nz/~mjjohnso/notes/59731/presentations/Adaptive%20Median%20Filtering.doc)
 
 Next, we turn to polynomial internpolation, in which a polynomial is fitted to the data set according to certain criteria. A common approach is to make iterations of interpolation and baseline/trend subtraction until a satisfactory result is reached, as described in [(Gan et al, Chemometrics Intel. Lab. Sys., 2006)](https://doi.org/10.1016/j.chemolab.2005.08.009).
