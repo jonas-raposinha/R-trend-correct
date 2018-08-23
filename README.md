@@ -33,17 +33,37 @@ Next, we go through the approaches one by one, starting with the mean filter (ak
 source("mirrorbound.r") # Boundary condition routine
 source("statfilt.r") # Mean and median filters
 filt_data1 <- statfilt(sa_data$IRLTLT01ZAM156N, 10, 1) #Applies the mean filter
-filt_data2 <- statfilt(sa_data$IRLTLT01ZAM156N, 50, 1)  
-filt_data3 <- statfilt(sa_data$IRLTLT01ZAM156N, 150, 1)
+filt_data2 <- statfilt(sa_data$IRLTLT01ZAM156N, 50, 1) 
+filt_data3 <- statfilt(sa_data$IRLTLT01ZAM156N, 150, 1) 
+filt_data4 <- statfilt(sa_data$IRLTLT01ZAM156N, 500, 1)
 
 plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", main = "Kernel size 10", ylab = "Percent", xlab = "Month") #Plots original data
-points(filt_data1[,2], col = "red", pch = 16, type = "l") 
-plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", main = "Kernel size 50", ylab = "Percent", xlab = "Month") 
-points(filt_data2[,2], col = "red", pch = 16, type = "l")
-plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", main = "Kernel size 150", ylab = "Percent", xlab = "Month")
-points(filt_data3[,2], col = "red", pch = 16, type = "l")
+points(filt_data1[,2], col = "red", pch = 16, type = "l")
 ```
 
-![plot3](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot02.png)
-![plot4](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot03.png)
-![plot5](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot04.png)
+![plot3](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/3.png)
+
+Kernel size 150 seems to represent the trend quite well. Let's see what the data looks like without the trend.
+
+```
+plot(filt_data3[,1], main = "LT Government Bond Yields, South Africa, 1960-2018, trend subtracted", col =  "blue", type = "l", ylab = "Percent", xlab = "Month") #Plots data set with trend subtracted
+abline(a = 0, b = 0, col = "red")
+```
+
+![plot4](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/4.png)
+
+Let's try the second data set to see how the mean filter handles baseline correction. Here, I will just use a kernel size of "".
+
+```
+filt_data <- statfilt(int_data[,3], 15, 1) 
+plot(int_data[,3], col =  "blue", type = "l",
+     main = "Flourescence intensity over time", ylab = "Intenstiy", xlab = "Time")
+points(filt_data[,2], col = "red", pch = 16, type = "l") 
+plot(filt_data[,1], col =  "blue", type = "l",
+     main = "Flourescence intensity over time, trend subtracted", ylab = "Intenstiy", xlab = "Time")
+abline(a = 0, b = 0, col = "red")
+```
+![plot5](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/5 .png)
+
+Not a great approximation of the baseline. The mean filter has issues with with the large peaks from the smaller changes in the baseline. Also, since the peaks are closely spaced, they influence the mean enough to inflate the baseline, which results in the corrected curve not having its base at zero. 
+Side note: There exists a wealth of different linear filters with varying characteristics, which may be of interest for these applications. The interested reader is encouraged to dig further.
