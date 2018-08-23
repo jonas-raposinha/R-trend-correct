@@ -147,3 +147,37 @@ Side note 2: It's of course possible to use fitting of other kinds of mathematic
 
 The fourth approach, the Tophat, is an operator in mathematical morphology that is again mainly used for image feature extraction and segmentation (eg to correct for nonuniform lighting conditions), but has been implemented for one-dimensional trend correction, e.g. by [(Sauve & Speed, Procedings Gensips, 2004](https://pdfs.semanticscholar.org/c04c/afc9b2670edd1ea38f0f724cadbe2ec321e9.pdf) and [(Breen et al, Electrophoresis, 2000)](https://doi.org/10.1002/1522-2683(20000601)21:11<2243::AID-ELPS2243>3.0.CO;2-K). 
 Without entering into too much detail, mathematical morphology deals with geometrical structures, by means of probing them with a simple shape, the "structuring element" (which in 1-d signal processing becomes analogous to the filter size, as discussed for mean and median filters above). For those further interested, the Tophat is defined as the difference between the input data and its morphological opening (which in turn is the dilation of the erosion of the data).
+
+```
+source("morphcorrect.r")
+filt_data1 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 10) # Applies the Tophat
+filt_data2 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 40) 
+filt_data3 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 120) 
+filt_data4 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 300)
+
+plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", lwd = 2,
+     main = "Tophat, se size 10", cex.main = 3, ylab = "", xlab = "", xaxt = 'n', yaxt = "n")
+points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2)
+```
+
+![plot10](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/10.png)
+
+The Tophat does an excellent job with separating the peaks from the baseline once we find a good size structuring element. 
+
+```
+filt_data1 <- morphcorrect(int_data$V3, 5)
+filt_data2 <- morphcorrect(int_data$V3, 10) 
+filt_data3 <- morphcorrect(int_data$V3, 30) 
+
+plot(int_data$V3, col =  "blue", type = "l", lwd = 2,
+     main = "Tophat, se size 5", cex.main = 3, ylab = "", xlab = "", xaxt = 'n', yaxt = "n") #Plots original data
+points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2) #Plots the extracted trend in red
+plot(filt_data2[,1], col =  "blue", type = "l", 
+     main = "Intensity over time, baseline corrected", xlab = "Time", ylab = "Intensity",
+     lwd = 2, cex.main = 3, cex.lab = 2, cex.axis = 2)
+abline(a = 0, b = 0, col = "red", lwd = 2)
+```
+
+![plot11](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/11.png)
+
+Trend extraction is less successful in this data set. Especially the region with large variation is not well represented. It's possible to think of morphological filters that would potentially do a better job at this, but that again is outside of the present discussion.
