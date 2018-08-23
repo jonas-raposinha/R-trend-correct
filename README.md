@@ -98,4 +98,44 @@ points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2)
 ![plot7](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/7.png)
 
 Here, the median filter performance is closer to that of the mean. It does perhaps not catch the shape of the curve quite as nicely, fares slightly better in regions with large variation.
-A nice discussion on median filters (for image processing, which I find sometimes makes for more pedagogical presentations) can be found in [Peng, Seminar report, 2004](http://www.massey.ac.nz/~mjjohnso/notes/59731/presentations/Adaptive%20Median%20Filtering.doc)
+A nice discussion on median filters (for image processing, which I find sometimes makes for more pedagogical presentations) can be found in [(Peng, Seminar report, 2004)](http://www.massey.ac.nz/~mjjohnso/notes/59731/presentations/Adaptive%20Median%20Filtering.doc)
+
+Next, we turn to polynomial internpolation, in which a polynomial is fitted to the data set according to certain criteria. A common approach is to make iterations of interpolation and baseline/trend subtraction until a satisfactory result is reached, as described in [(Gan et al, Chemometrics Intel. Lab. Sys., 2006)](https://doi.org/10.1016/j.chemolab.2005.08.009).
+We compare two different degrees of polynomials to see how it handles trend extraction and baseline correction.
+
+```
+source("polycorrect.r")
+filt_data1 <- polycorrect(sa_data$IRLTLT01ZAM156N, 8) # Applies the iterative interpolation
+filt_data2 <- polycorrect(sa_data$IRLTLT01ZAM156N, 16)
+
+plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", lwd = 2,
+     main = "Polynomial, 8th degree", cex.main = 3, ylab = "", xlab = "", xaxt = 'n', yaxt = "n") #Plots original data
+points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2) #Plots the extracted trend in red
+```
+
+![plot8](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/8.png)
+
+Firstly, this approach produces beautifully smooth curves, since they are based on polynomials. We can also observe what is sometimes a significant drawback of this approach though, termed Runge's phenomenon, i.e. oscillations at the edges produced by high order polynomials. This is annoying since those are typically needed to fit complex data, as seen when comparing the two examples above. 
+To solve this, we can use interpolating splines (piecewise interpolation of lower degree polynomials, typically cubic). Fortunately, R has an implementation of smoothing splines, which differ from regular splines by a roughness penalty, typically based on the second derivative of the data set. The interested reader is referred to more advanced splines-based methods, e.g. the Hodrick-Prescott filter.
+
+```
+filt_data <- smooth.spline(sa_data$IRLTLT01ZAM156N, spar = 0.7) #cubic smoothing splines
+plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", lwd = 2)
+points(filt_data, col = "red", pch = 16, cex = 0.4)
+```
+
+Let's briefly look at baseline correction using interative interpolation or smooth splines as well.
+
+```
+filt_data1 <- polycorrect(int_data$V3, 4)
+filt_data2 <- polycorrect(int_data$V3, 9)
+filt_data3 <- polycorrect(int_data$V3, 18)
+filt_data4 <- smooth.spline(int_data$V3, spar = 0.7)
+
+plot(int_data$V3, col =  "blue", type = "l", lwd = 2,
+     main = "Polynomial, 9th degree", cex.main = 3, ylab = "", xlab = "", xaxt = 'n', yaxt = "n") #Plots original data
+points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2) #Plots the extracted trend in red
+plot(int_data$V3, col =  "blue", type = "l", main = "Splines, spar = 0.7", lwd = 2, cex.main = 3, ylab = "", xlab = "", xaxt = 'n', yaxt = "n")
+points(filt_data4, col = "red", type = "l", lwd = 2)
+```
+
