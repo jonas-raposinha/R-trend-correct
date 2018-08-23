@@ -68,6 +68,7 @@ abline(a = 0, b = 0, col = "red")
 Not a great approximation of the baseline. The mean filter has issues with with the large peaks from the smaller changes in the baseline. Also, since the peaks are closely spaced, they influence the mean enough to inflate the baseline, which results in the corrected curve not having its base at zero. 
 Side note: There exists a wealth of different linear filters with varying characteristics, which may be of interest for these applications. The interested reader is encouraged to dig further.
 
+
 Let's compare with the non-linear median filter that operates in a similar way to mean filter, but instead replaces each data point with the median of itself and its neighbours. Since the median value is unaffected by transient changes, we will see that these are replaced by distinctive plateaus, as compared to the smoother curves produced by the mean filter.
 
 ```
@@ -100,7 +101,8 @@ points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2)
 Here, the median filter performance is closer to that of the mean. It does perhaps not catch the shape of the curve quite as nicely, but fares slightly better in regions with large variation.
 A nice discussion on median filters (for image processing, which I find sometimes makes for more pedagogical presentations) can be found in [(Peng, Seminar report, 2004)](http://www.massey.ac.nz/~mjjohnso/notes/59731/presentations/Adaptive%20Median%20Filtering.doc)
 
-Next, we turn to polynomial internpolation, in which a polynomial is fitted to the data set according to certain criteria. A common approach is to make iterations of interpolation and baseline/trend subtraction until a satisfactory result is reached, as described in [(Gan et al, Chemometrics Intel. Lab. Sys., 2006)](https://doi.org/10.1016/j.chemolab.2005.08.009).
+
+Next, we turn to polynomial interpolation, in which a polynomial is fitted to the data set according to certain criteria. A common approach is to make iterations of interpolation and baseline/trend subtraction until a satisfactory result is reached, as described in [(Gan et al, Chemometrics Intel. Lab. Sys., 2006)](https://doi.org/10.1016/j.chemolab.2005.08.009).
 We compare two different degrees of polynomials to see how it handles trend extraction and baseline correction.
 
 ```
@@ -148,7 +150,8 @@ Side note 1: There are several more or less advanced polynomial interpolation-ba
 
 Side note 2: It's of course possible to use fitting of other kinds of mathematical expressions than polynomials. This is more common in image feature extraction and examples include exponential and hyperbolic expressions [(Yan et al, Sensor Mater, 2012)](http://myukk.org/SM2017/sm_pdf/SM869.pdf) and parabolas and power expressions [(Kumar et al, Natl Acad Sci Lett, 2014)](https://doi.org/10.1007/s40009-014-0253-4). This is however outside the scope of this discussion.
 
-The fourth approach, the Tophat, is an operator in mathematical morphology that is again mainly used for image feature extraction and segmentation (eg to correct for nonuniform lighting conditions), but has been implemented for one-dimensional trend correction, e.g. by [(Sauve & Speed, Procedings Gensips, 2004](https://pdfs.semanticscholar.org/c04c/afc9b2670edd1ea38f0f724cadbe2ec321e9.pdf) and [(Breen et al, Electrophoresis, 2000)](https://doi.org/10.1002/1522-2683(20000601)21:11<2243::AID-ELPS2243>3.0.CO;2-K). 
+
+The fourth approach, the Tophat, is an operator in mathematical morphology that is again mainly used for image feature extraction and segmentation (eg to correct for nonuniform lighting conditions), but has been implemented for one-dimensional trend correction, e.g. by [(Breen et al, Electrophoresis, 2000)](https://doi.org/10.1002/1522-2683(20000601)21:11<2243::AID-ELPS2243>3.0.CO;2-K) and [(Sauve & Speed, Procedings Gensips, 2004](https://pdfs.semanticscholar.org/c04c/afc9b2670edd1ea38f0f724cadbe2ec321e9.pdf). 
 Without entering into too much detail, mathematical morphology deals with geometrical structures, by means of probing them with a simple shape, the "structuring element" (which in 1-d signal processing becomes analogous to the filter size, as discussed for mean and median filters above). For those further interested, the Tophat is defined as the difference between the input data and its morphological opening (which in turn is the dilation of the erosion of the data).
 
 ```
