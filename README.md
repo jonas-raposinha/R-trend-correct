@@ -71,13 +71,31 @@ Side note: There exists a wealth of different linear filters with varying charac
 Let's compare with the non-linear median filter that operates in a similar way to mean filter, but instead replaces each data point with the median of itself and its neighbours. Since the median value is unaffected by transient changes, we will see that these are replaced by distinctive plateaus, as compared to the smoother curves produced by the mean filter.
 
 ```
-filt_data1 <- statfilt(sa_data$IRLTLT01ZAM156N, 10, 2) #Applies the median filter
+filt_data <- statfilt(int_data[,3], 15, 2) # Applies the median filter
+plot(int_data[,3], col =  "blue", type = "l",
+     main = "Flourescence intensity over time", ylab = "Intenstiy", xlab = "Time")
+points(filt_data[,2], col = "red", pch = 16, type = "l") 
+plot(filt_data[,1], col =  "blue", type = "l", 
+     main = "Flourescence intensity over time, baseline subtracted", ylab = "Intenstiy", xlab = "Time")
+abline(a = 0, b = 0, col = "red")
+```
+
+![plot6](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/6.png)
+
+The baseline correction is clearly better than above (effectively centring the baseline around zero), although there are still difficulties in distinguishing some elements. Also, the last peak is clipped relative to the others, even at an "optimal" filter size. What about the trend extraction? 
+
+```
+filt_data1 <- statfilt(sa_data$IRLTLT01ZAM156N, 10, 2)
 filt_data2 <- statfilt(sa_data$IRLTLT01ZAM156N, 50, 2) 
 filt_data3 <- statfilt(sa_data$IRLTLT01ZAM156N, 150, 2) 
 filt_data4 <- statfilt(sa_data$IRLTLT01ZAM156N, 500, 2)
 
 plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", lwd = 2,
-     main = "Median, kernel size 10", cex.main = 3, ylab = "", xlab = "", xaxt = 'n', yaxt = "n") #Plots original data
-points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2) #Plots the extracted trend in red
+     main = "Median, kernel size 10", cex.main = 3, ylab = "", xlab = "", xaxt = 'n', yaxt = "n")
+points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2)
 ```
-![plot6](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/6.png)
+
+![plot7](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/7.png)
+
+Here, the median filter performance is closer to that of the mean. It does perhaps not catch the shape of the curve quite as nicely, fares slightly better in regions with large variation.
+A nice discussion on median filters (for image processing, which I find sometimes makes for more pedagogical presentations) can be found in [Peng, Seminar report, 2004](http://www.massey.ac.nz/~mjjohnso/notes/59731/presentations/Adaptive%20Median%20Filtering.doc)
