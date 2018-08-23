@@ -156,22 +156,7 @@ Without entering into too much detail, mathematical morphology deals with geomet
 
 ```
 source("morphcorrect.r")
-filt_data1 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 10) # Applies the Tophat
-filt_data2 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 40) 
-filt_data3 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 120) 
-filt_data4 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 300)
-
-plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", lwd = 2,
-     main = "Tophat, se size 10", cex.main = 3, ylab = "", xlab = "", xaxt = 'n', yaxt = "n")
-points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2)
-```
-
-![plot10](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/11.png)
-
-The Tophat does an excellent job with separating the peaks from the baseline once we find a good size structuring element. 
-
-```
-filt_data1 <- morphcorrect(int_data$V3, 5)
+filt_data1 <- morphcorrect(int_data$V3, 5) # Applies the Tophat
 filt_data2 <- morphcorrect(int_data$V3, 10) 
 filt_data3 <- morphcorrect(int_data$V3, 30) 
 
@@ -182,6 +167,21 @@ plot(filt_data2[,1], col =  "blue", type = "l",
      main = "Intensity over time, baseline corrected", xlab = "Time", ylab = "Intensity",
      lwd = 2, cex.main = 3, cex.lab = 2, cex.axis = 2)
 abline(a = 0, b = 0, col = "red", lwd = 2)
+```
+
+![plot10](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/11.png)
+
+The Tophat does an excellent job with separating the peaks from the baseline once we find a good size structuring element. 
+
+```
+filt_data1 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 10) 
+filt_data2 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 40) 
+filt_data3 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 120) 
+filt_data4 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 300)
+
+plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", lwd = 2,
+     main = "Tophat, se size 10", cex.main = 3, ylab = "", xlab = "", xaxt = 'n', yaxt = "n")
+points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2)
 ```
 
 ![plot11](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/10.png)
