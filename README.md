@@ -166,7 +166,7 @@ plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", lwd = 2,
 points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2)
 ```
 
-![plot10](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/10.png)
+![plot10](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/11.png)
 
 The Tophat does an excellent job with separating the peaks from the baseline once we find a good size structuring element. 
 
@@ -184,6 +184,6 @@ plot(filt_data2[,1], col =  "blue", type = "l",
 abline(a = 0, b = 0, col = "red", lwd = 2)
 ```
 
-![plot11](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/11.png)
+![plot11](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/10.png)
 
 Trend extraction is less successful in this data set. Especially the region with large variation is not well represented. It's possible to think of morphological filters that would potentially do a better job at this, but that again is outside of the present discussion.
