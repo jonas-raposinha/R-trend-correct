@@ -1,17 +1,23 @@
 # R-trend-correct
-4 methods for trend correction or analysis using boundary conditions
+4 methods for trend extraction or baseline correction using boundary conditions
 
-The terms "trend" and "baseline" can often enough refer to the same phenomenon in practice but with different underlying assumptions. In the case of trend, we mean the overall direction of change over time in a data set, not considering changes of smaller orders of magnitude, and may be important to the analysis. The baseline is usually taken to be the background signal level (whichever shape it may have) from which we distinguish our signal of interest. Changes in the baseline (due to experitmental artifacts or other factors) are thus often either not interesting or actually impede analysis. What both cases have in common though, is that we need to separate the trend or baseline from the rest of the data before we can perform further analysis.
-Below, I will present 4 different approaches to do this, all with different pros and cons. I will not discuss these in great detail but give some pointers as to their respective applications. The approaches are: mean filter, median filter, polynomial interpolation and the morphological tophat.
+For the sake of the discussion below, I make the claim that the terms "trend" and "baseline" often enough refer to the same phenomenon in practice, but with different underlying assumptions.
+In the case of trend, we here mean the overall direction of change over time in a data set that may be important to the analysis, not considering changes of smaller orders of magnitude.
+The baseline is here taken to be the background signal level (whichever shape it may have), from which we distinguish our signal of interest. Changes in the baseline (due to experimental artifacts or other factors) are thus often at best not interesting or, worse, impede analysis.
+What both cases have in common though, is that we need to separate the trend or baseline from the rest of the data before we can perform further analysis. Below, I will present 4 different approaches to separate the trend or baseline from the rest of the data, all with different pros and cons. For the sake of space, I won't be discussing these approaches in great detail (especially not their mathematical foundations, as they are adequately desscribed elsewhere), but rather give some pointers as to their respective applications. At times where I think it benefits the discussion though, I will include references to more in depth treatments.
+Disclaimer 1: As always, the more we know about our data (signal characteristics, noise frequencies, sampling procedure etc), the better informed our choice of processing approach will be. Thus, automatic trend extraction or baseline correction will often fall short for some types of data, while working well on others.
+Disclaimer 2: I will not cover the related problem of trend detection, i.e. determining whether or not a statistically significant trend exists in the data set.
+The approaches I will cover here are: mean filter, median filter, polynomial interpolation and the morphological tophat.
+Side note: all 4 approaches require boundary conditions, meaning some way of handling the beginning and end of the data set. I picked "mirror" boundary conditions, which I will introduce at another time.
 
-Firstly, let's look at two different data sets. The first one is Long-Term Government Bond between Jan 1960 and Jan 2018, from the [Federal Reserve Economic Data, St Louis](ttps://fred.stlouisfed.org/).
+Firstly, let's look at two different data sets. The first one is Long-Term Government Bond between Jan 1960 and Jan 2018, from the [Federal Reserve Economic Data, St Louis](https://fred.stlouisfed.org/).
 
 ```
 sa_data <- read.table("sa_lt_govt_bond_yields.csv", sep = ",", header = T)
 plot(sa_data$IRLTLT01ZAM156N, type = "l", main = "LT Government Bond Yields, South Africa, 1960-2018", ylab = "Percent", xlab = "Month")
 ```
 
-![plot1](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot.png)
+![plot1](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/1.png)
 
 The second one is (slightly altered) experimental data on flourescence intensity over time with a varying baseline. Our interest in this case is the intensity peaks.
 ```
@@ -19,11 +25,12 @@ int_data <- read.table("peaks_test.csv", sep = ";", dec = ",")
 plot(int_data$V3, main = "Flourescence intensity over time", ylab = "Intensity (a.u.)", xlab = "Time (s)")
 ```
 
-![plot2](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/Rplot01.png)
+![plot2](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/2.png)
 
-Next, we go through the approaches one by one, starting with the mean filter, essentially a classic low-pass filter. We need to specify the size of the filter kernel (matrix) that decides how rapid changes will be filtered and will of course depend on the data set. To illustrate we try 3 different values.
+Next, we go through the approaches one by one, starting with the mean filter (aka moving average or blurring). This is a simple, linear low-pass filter that turns each data point into the mean of itself and its neighbours. The size of the neighbourhood that is considered (ie the filter kernel size) decides how rapid changes will be filtered and needs to be adjusted to each data set. To illustrate we compare 4 different values. For the sake of clarity, I will exclude code that constitutes simple repetition of data treatment or plotting.
+
 ```
-source("mirrorbound.r") # Call the boundary condition routine
+source("mirrorbound.r") # Boundary condition routine
 source("statfilt.r") # Mean and median filters
 filt_data1 <- statfilt(sa_data$IRLTLT01ZAM156N, 10, 1) #Applies the mean filter
 filt_data2 <- statfilt(sa_data$IRLTLT01ZAM156N, 50, 1)  
