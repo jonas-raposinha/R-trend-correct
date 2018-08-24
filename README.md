@@ -127,7 +127,7 @@ plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", lwd = 2)
 points(filt_data, col = "red", pch = 16, cex = 0.4)
 ```
 
-
+![plot9](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/12.png)
 
 Let's briefly look at baseline correction using interative interpolation or smoothing splines as well.
 
