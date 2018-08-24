@@ -127,6 +127,8 @@ plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", lwd = 2)
 points(filt_data, col = "red", pch = 16, cex = 0.4)
 ```
 
+![plot9](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/splines.png)
+
 Let's briefly look at baseline correction using interative interpolation or smoothing splines as well.
 
 ```
@@ -141,7 +143,7 @@ points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2) #Plots the ex
 plot(int_data$V3, col =  "blue", type = "l", main = "Splines, spar = 0.7", lwd = 2, cex.main = 3, ylab = "", xlab = "", xaxt = 'n', yaxt = "n")
 points(filt_data4, col = "red", type = "l", lwd = 2)
 ```
-![plot9](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/9.png)
+![plot10](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/9.png)
 
 The iterative interpolation does a decent job with an 18th degree polynomial, although the "waveiness" has issues with sharp changes.
 Of note is that while the smoothing splines manage to model the baseline shape quite well, they, similarly to the mean filter, fail to trace its level and will thus not bring it down to zero.
@@ -169,7 +171,7 @@ plot(filt_data2[,1], col =  "blue", type = "l",
 abline(a = 0, b = 0, col = "red", lwd = 2)
 ```
 
-![plot10](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/11.png)
+![plot11](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/11.png)
 
 The Tophat does an excellent job with separating the peaks from the baseline once we find a good size structuring element. 
 
@@ -184,6 +186,6 @@ plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", lwd = 2,
 points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2)
 ```
 
-![plot11](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/10.png)
+![plot12](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/10.png)
 
 Trend extraction is less successful in this data set. Especially the region with large variation is not well represented. It's possible to think of morphological filters that would potentially do a better job at this, but that again is outside of the present discussion.
