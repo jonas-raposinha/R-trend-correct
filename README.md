@@ -202,12 +202,12 @@ system.time(statfilt(temp_data$V4, 14, 2)) # Median
 system.time(polycorrect(na.omit(temp_data$V4), 8)) # Iterative polynomial interpolation
  user  system elapsed
  53.88   14.54   68.91
-system.time(smooth.spline(na.omit(temp_data$V4), spar = 0.7)) # Smoothing splines
- user  system elapsed 
- 0.11    0.00    0.11 
 system.time(morphcorrect(temp_data$V4, 14)) # Tophat
  user  system elapsed 
  0.52    0.00    0.52 
+system.time(smooth.spline(na.omit(temp_data$V4), spar = 0.7)) # Smoothing splines
+ user  system elapsed 
+ 0.11    0.00    0.11 
 ```
 
 Out of the 4 approaches implemented, the Tophat wins this round, although the differences are not that big. The comparison with the polynomial interpolation is a bit unfare since the iterations are implemented using a normal R loop, but still, iterative approaches in general are slow. Thankfully, the smoothing splines do not have this issue and are even faster than the Tophat.
