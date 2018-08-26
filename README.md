@@ -210,5 +210,6 @@ system.time(smooth.spline(na.omit(temp_data$V4), spar = 0.7)) # Smoothing spline
  0.11    0.00    0.11 
 ```
 
-Out of the 4 approaches implemented, the Tophat wins this round, although the differences are not that big. The comparison with the polynomial interpolation is a bit unfare since the iterations are implemented using a normal R loop, but still, iterative approaches in general are slow. Thankfully, the smoothing splines do not have this issue and are even faster than the Tophat.
+Out of the 4 approaches implemented, the Tophat wins this round, although the differences are not that big, except for the iterative polynomial interpolation. That comparison is a bit unfare though since the iterations are implemented using a normal R loop, but still, iterative approaches in general are slow. Thankfully, the smoothing splines do not have this issue and are even faster than the Tophat.
+
 I hope that this provided more clarification than confusion and wish you good luck with your trends and baselines!
