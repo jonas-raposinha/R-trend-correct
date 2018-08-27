@@ -145,13 +145,12 @@ points(filt_data4, col = "red", type = "l", lwd = 2)
 ```
 ![plot10](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/ip2x2.png)
 
-The iterative interpolation does a decent job with an 9th degree polynomial, although the "waveiness" has issues with sharp changes.
+The iterative interpolation does a decent job with an 9th degree polynomial, although it has issues with sharp changes.
 Of note is that while the smoothing splines manage to model the baseline shape quite well, they, similarly to the mean filter, fail to trace its level and will thus not bring it down to zero.
 
 Side note 1: There are several more or less advanced polynomial interpolation-based methods that the interested reader may want to look into, one being the recently published Goldindec algorithm [(Liu et al, Appl Spectrosc, 2015)](http://dx.doi.org/10.1366/14-07798).
 
-Side note 2: It's of course possible to use fitting of other kinds of mathematical expressions than polynomials. This is more common in image feature extraction and examples include exponential and hyperbolic expressions [(Yan et al, Sensor Mater, 2012)](http://myukk.org/SM2017/sm_pdf/SM869.pdf) and parabolas and power expressions [(Kumar et al, Natl Acad Sci Lett, 2014)](https://doi.org/10.1007/s40009-014-0253-4). This is however outside the scope of this discussion.
-
+Side note 2: It's of course possible to fit of other kinds of mathematical expressions than polynomials. This is more common in image feature extraction and examples include exponential and hyperbolic expressions [(Yan et al, Sensor Mater, 2012)](http://myukk.org/SM2017/sm_pdf/SM869.pdf), and parabolas and power expressions [(Kumar et al, Natl Acad Sci Lett, 2014)](https://doi.org/10.1007/s40009-014-0253-4).
 
 The fourth approach, the Tophat, is an operator in mathematical morphology that is again mainly used for image feature extraction and segmentation (eg to correct for nonuniform lighting conditions), but has been implemented for one-dimensional trend correction, e.g. by [(Breen et al, Electrophoresis, 2000)](https://doi.org/10.1002/1522-2683(20000601)21:11<2243::AID-ELPS2243>3.0.CO;2-K) and [(Sauve & Speed, Procedings Gensips, 2004](https://pdfs.semanticscholar.org/c04c/afc9b2670edd1ea38f0f724cadbe2ec321e9.pdf). 
 Without entering into too much detail, mathematical morphology deals with geometrical structures, by means of probing them with a simple shape, the "structuring element" (which in 1-d signal processing becomes analogous to the filter size, as discussed for mean and median filters above). For those further interested, the Tophat is defined as the difference between the input data and its morphological opening (which in turn is the dilation of the erosion of the data).
