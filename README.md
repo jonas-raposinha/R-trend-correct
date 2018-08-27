@@ -190,7 +190,7 @@ points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2)
 
 Trend extraction is less successful in this data set. Especially the region with large variation is not well represented. It's possible to think of morphological filters that would potentially do a better job at this, but that again is outside of the present discussion.
 
-Finally, let's time the different approaches. To be able to see any difference, we use a slightly larger data set containing [daily mean temperatures recorded in Stockholm, Sweden](https://bolin.su.se/data/stockholm/), between the years 1756 and 2017, containing 95694 observations.
+Finally, let's time the different approaches. To be able to see any difference, we use a slightly larger data set containing [daily air temperatures recorded in Stockholm, Sweden](https://bolin.su.se/data/stockholm/), between the years 1756 and 2017, containing 95694 observations.
 
 ```
 system.time(statfilt(temp_data$V4, 14, 1)) # Mean
