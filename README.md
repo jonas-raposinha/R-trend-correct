@@ -143,9 +143,9 @@ points(filt_data1[,2], col = "red", pch = 16, type = "l", lwd = 2) #Plots the ex
 plot(int_data$V3, col =  "blue", type = "l", main = "Splines, spar = 0.7", lwd = 2, cex.main = 3, ylab = "", xlab = "", xaxt = 'n', yaxt = "n")
 points(filt_data4, col = "red", type = "l", lwd = 2)
 ```
-![plot10](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/9.png)
+![plot10](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/ip2x2.png)
 
-The iterative interpolation does a decent job with an 18th degree polynomial, although the "waveiness" has issues with sharp changes.
+The iterative interpolation does a decent job with an 9th degree polynomial, although the "waveiness" has issues with sharp changes.
 Of note is that while the smoothing splines manage to model the baseline shape quite well, they, similarly to the mean filter, fail to trace its level and will thus not bring it down to zero.
 
 Side note 1: There are several more or less advanced polynomial interpolation-based methods that the interested reader may want to look into, one being the recently published Goldindec algorithm [(Liu et al, Appl Spectrosc, 2015)](http://dx.doi.org/10.1366/14-07798).
