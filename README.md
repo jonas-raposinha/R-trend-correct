@@ -12,7 +12,7 @@ Side note: all 4 approaches require boundary conditions, meaning some way of han
 
 Firstly, let's look at two different data sets. The first one is Long-Term Government Bond between Jan 1960 and Jan 2018, from the [Federal Reserve Economic Data, St Louis](https://fred.stlouisfed.org/).
 
-```
+```R
 sa_data <- read.table("sa_lt_govt_bond_yields.csv", sep = ",", header = T)
 plot(sa_data$IRLTLT01ZAM156N, type = "l", main = "LT Government Bond Yields, South Africa, 1960-2018", ylab = "Percent", xlab = "Month")
 ```
@@ -20,7 +20,8 @@ plot(sa_data$IRLTLT01ZAM156N, type = "l", main = "LT Government Bond Yields, Sou
 ![plot1](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/1.png)
 
 The second one is (slightly altered) experimental data on flourescence intensity over time with a varying baseline. Our interest in this case is the intensity peaks.
-```
+
+```R
 int_data <- read.table("peaks_test.csv", sep = ";", dec = ",")
 plot(int_data$V3, main = "Flourescence intensity over time", ylab = "Intensity (a.u.)", xlab = "Time (s)")
 ```
@@ -29,7 +30,7 @@ plot(int_data$V3, main = "Flourescence intensity over time", ylab = "Intensity (
 
 Next, we go through the approaches one by one, starting with the mean filter (aka moving average or blurring). This is a simple, linear low-pass filter that turns each data point into the mean of itself and its neighbours. The size of the neighbourhood that is considered (ie the filter kernel size) decides how rapid changes will be filtered and needs to be adjusted to each data set. To illustrate we compare 4 different values. For the sake of clarity, I will exclude code that constitutes simple repetition of data treatment or plotting, and remove axis labels in tile plots.
 
-```
+```R
 source("mirrorbound.r") # Boundary condition routine
 source("statfilt.r") # Mean and median filters
 filt_data1 <- statfilt(sa_data$IRLTLT01ZAM156N, 10, 1) #Applies the mean filter
@@ -45,7 +46,7 @@ points(filt_data1[,2], col = "red", pch = 16, type = "l")
 
 Kernel size 150 seems to represent the trend quite well. Let's see what the data looks like without the trend.
 
-```
+```R
 plot(filt_data3[,1], main = "LT Government Bond Yields, South Africa, 1960-2018, trend subtracted", col =  "blue", type = "l", ylab = "Percent", xlab = "Month") #Plots data set with trend subtracted
 abline(a = 0, b = 0, col = "red")
 ```
@@ -54,7 +55,7 @@ abline(a = 0, b = 0, col = "red")
 
 Let's try the second data set to see how the mean filter handles baseline correction. Here, I will just use a kernel size of "".
 
-```
+```R
 filt_data <- statfilt(int_data[,3], 15, 1) 
 plot(int_data[,3], col =  "blue", type = "l",
      main = "Flourescence intensity over time", ylab = "Intenstiy", xlab = "Time")
@@ -71,7 +72,7 @@ Side note: There exists a wealth of different linear filters with varying charac
 
 Let's compare with the non-linear median filter that operates in a similar way to mean filter, but instead replaces each data point with the median of itself and its neighbours. Since the median value is unaffected by transient changes, we will see that these are replaced by distinctive plateaus, as compared to the smoother curves produced by the mean filter.
 
-```
+```R
 filt_data <- statfilt(int_data[,3], 15, 2) # Applies the median filter
 plot(int_data[,3], col =  "blue", type = "l",
      main = "Flourescence intensity over time", ylab = "Intenstiy", xlab = "Time")
@@ -85,7 +86,7 @@ abline(a = 0, b = 0, col = "red")
 
 The baseline correction is clearly better than above (effectively centring the baseline around zero), although there are still difficulties in distinguishing some elements. Also, the last peak is clipped relative to the others, even at an "optimal" filter size. What about the trend extraction? 
 
-```
+```R
 filt_data1 <- statfilt(sa_data$IRLTLT01ZAM156N, 10, 2)
 filt_data2 <- statfilt(sa_data$IRLTLT01ZAM156N, 50, 2) 
 filt_data3 <- statfilt(sa_data$IRLTLT01ZAM156N, 150, 2) 
@@ -105,7 +106,7 @@ A nice discussion on median filters (for image processing, which I find sometime
 Next, we turn to polynomial interpolation, in which a polynomial is fitted to the data set according to certain criteria. A common approach is to make iterations of interpolation and baseline/trend subtraction until a satisfactory result is reached, as described in [(Gan et al, Chemometrics Intel. Lab. Sys., 2006)](https://doi.org/10.1016/j.chemolab.2005.08.009).
 We compare two different degrees of polynomials to see how it handles trend extraction and baseline correction.
 
-```
+```R
 source("polycorrect.r")
 filt_data1 <- polycorrect(sa_data$IRLTLT01ZAM156N, 8) # Applies the iterative interpolation
 filt_data2 <- polycorrect(sa_data$IRLTLT01ZAM156N, 16)
@@ -121,7 +122,7 @@ Firstly, this approach produces beautifully smooth curves, since they are based 
 
 To solve this, we can use interpolating splines (piecewise interpolation of lower degree polynomials, typically cubic). Fortunately, R has an implementation of smoothing splines, which differ from regular splines by a roughness penalty, typically based on the second derivative of the data set. The interested reader is also referred to more advanced splines-based methods, e.g. the Hodrick-Prescott filter.
 
-```
+```R
 filt_data <- smooth.spline(sa_data$IRLTLT01ZAM156N, spar = 0.7) #cubic smoothing splines
 plot(sa_data$IRLTLT01ZAM156N, col =  "blue", type = "l", lwd = 2)
 points(filt_data, col = "red", pch = 16, cex = 0.4)
@@ -131,7 +132,7 @@ points(filt_data, col = "red", pch = 16, cex = 0.4)
 
 Let's briefly look at baseline correction using interative interpolation or smoothing splines as well.
 
-```
+```R
 filt_data1 <- polycorrect(int_data$V3, 4)
 filt_data2 <- polycorrect(int_data$V3, 9)
 filt_data3 <- polycorrect(int_data$V3, 18)
@@ -155,7 +156,7 @@ Side note 2: It's of course possible to fit of other kinds of mathematical expre
 The fourth approach, the Tophat, is an operator in mathematical morphology that is again mainly used for image feature extraction and segmentation (eg to correct for nonuniform lighting conditions), but has been implemented for one-dimensional trend correction, e.g. by [(Breen et al, Electrophoresis, 2000)](https://doi.org/10.1002/1522-2683(20000601)21:11<2243::AID-ELPS2243>3.0.CO;2-K) and [(Sauve & Speed, Procedings Gensips, 2004](https://pdfs.semanticscholar.org/c04c/afc9b2670edd1ea38f0f724cadbe2ec321e9.pdf). 
 Without entering into too much detail, mathematical morphology deals with geometrical structures, by means of probing them with a simple shape, the "structuring element" (which in 1-d signal processing becomes analogous to the filter size, as discussed for mean and median filters above). For those further interested, the Tophat is defined as the difference between the input data and its morphological opening (which in turn is the dilation of the erosion of the data).
 
-```
+```R
 source("morphcorrect.r")
 filt_data1 <- morphcorrect(int_data$V3, 5) # Applies the Tophat
 filt_data2 <- morphcorrect(int_data$V3, 10) 
@@ -174,7 +175,7 @@ abline(a = 0, b = 0, col = "red", lwd = 2)
 
 The Tophat does an excellent job with separating the peaks from the baseline once we find a good size structuring element. 
 
-```
+```R
 filt_data1 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 10) 
 filt_data2 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 40) 
 filt_data3 <- morphcorrect(sa_data$IRLTLT01ZAM156N, 120) 
@@ -191,7 +192,7 @@ Trend extraction is less successful in this data set. Especially the region with
 
 Finally, let's time the different approaches. To be able to see any difference, we use a slightly larger data set containing [daily air temperatures recorded in Stockholm, Sweden](https://bolin.su.se/data/stockholm/), between the years 1756 and 2017, containing 95694 observations.
 
-```
+```R
 system.time(statfilt(temp_data$V4, 14, 1)) # Mean
  user  system elapsed 
  1.18    0.01    1.20 
