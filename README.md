@@ -19,11 +19,11 @@ plot(sa_data$IRLTLT01ZAM156N, type = "l", main = "LT Government Bond Yields, Sou
 
 ![plot1](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/1.png)
 
-The second one is (slightly altered) experimental data on flourescence intensity over time with a varying baseline. Our interest in this case is the intensity peaks.
+The second one is (slightly altered) experimental data on fluorescence intensity over time with a varying baseline. Our interest in this case is the intensity peaks.
 
 ```R
 int_data <- read.table("peaks_test.csv", sep = ";", dec = ",")
-plot(int_data$V3, main = "Flourescence intensity over time", ylab = "Intensity (a.u.)", xlab = "Time (s)")
+plot(int_data$V3, main = "Fluorescence intensity over time", ylab = "Intensity (a.u.)", xlab = "Time (s)")
 ```
 
 ![plot2](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/2.png)
@@ -53,32 +53,32 @@ abline(a = 0, b = 0, col = "red")
 
 ![plot4](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/4.png)
 
-Let's try the second data set to see how the mean filter handles baseline correction. Here, I will just use a kernel size of "".
+Let's try the second data set to see how the mean filter handles baseline correction. Here, I will just use a kernel size of 15.
 
 ```R
 filt_data <- statfilt(int_data[,3], 15, 1) 
 plot(int_data[,3], col =  "blue", type = "l",
-     main = "Flourescence intensity over time", ylab = "Intenstiy", xlab = "Time")
+     main = "Fluorescence intensity over time", ylab = "Intenstiy", xlab = "Time")
 points(filt_data[,2], col = "red", pch = 16, type = "l") 
 plot(filt_data[,1], col =  "blue", type = "l",
-     main = "Flourescence intensity over time, trend subtracted", ylab = "Intenstiy", xlab = "Time")
+     main = "Fluorescence intensity over time, trend subtracted", ylab = "Intenstiy", xlab = "Time")
 abline(a = 0, b = 0, col = "red")
 ```
 ![plot5](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/5.png)
 
-Not a great approximation of the baseline. The mean filter has issues with with the large peaks from the smaller changes in the baseline. Also, since the peaks are closely spaced, they influence the mean enough to inflate the baseline, which results in the corrected curve not having its base at zero. 
+Not a great approximation of the baseline. The mean filter has issues with the large peaks from the smaller changes in the baseline. Also, since the peaks are closely spaced, they influence the mean enough to inflate the baseline, which results in the corrected curve not having its base at zero. 
 Side note: There exists a wealth of different linear filters with varying characteristics, which may be of interest for these applications. The interested reader is encouraged to dig further.
 
 
-Let's compare with the non-linear median filter that operates in a similar way to mean filter, but instead replaces each data point with the median of itself and its neighbours. Since the median value is unaffected by transient changes, we will see that these are replaced by distinctive plateaus, as compared to the smoother curves produced by the mean filter.
+Let's compare with the non-linear median filter that operates in a similar way to the mean filter, but instead replaces each data point with the median of itself and its neighbours. Since the median value is unaffected by transient changes, we will see that these are replaced by distinctive plateaus, as compared to the smoother curves produced by the mean filter.
 
 ```R
 filt_data <- statfilt(int_data[,3], 15, 2) # Applies the median filter
 plot(int_data[,3], col =  "blue", type = "l",
-     main = "Flourescence intensity over time", ylab = "Intenstiy", xlab = "Time")
+     main = "Fluorescence intensity over time", ylab = "Intenstiy", xlab = "Time")
 points(filt_data[,2], col = "red", pch = 16, type = "l") 
 plot(filt_data[,1], col =  "blue", type = "l", 
-     main = "Flourescence intensity over time, baseline subtracted", ylab = "Intenstiy", xlab = "Time")
+     main = "Fluorescence intensity over time, baseline subtracted", ylab = "Intenstiy", xlab = "Time")
 abline(a = 0, b = 0, col = "red")
 ```
 
