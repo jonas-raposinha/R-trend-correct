@@ -28,7 +28,7 @@ plot(int_data$V3, main = "Fluorescence intensity over time", ylab = "Intensity (
 
 ![plot2](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/2.png)
 
-Next, we go through the approaches one by one, starting with the mean filter (aka "moving average" or "blurring"). This is a simple, linear low-pass filter that turns each data point into the mean of itself and its neighbours. The size of the neighbourhood considered (ie the filter kernel size) decides how rapid changes will be filtered and needs to be adjusted to each data set. To illustrate we compare 4 different values. For the sake of clarity, I will exclude code that constitutes simple repetition of data treatment or plotting, and remove axis labels in tile plots.
+Next, we go through the approaches one by one, starting with the mean filter (aka "moving average" or "blurring"). This is a simple, linear low-pass filter that turns each data point into the mean of itself and its neighbours. The size of the neighbourhood considered (ie the filter kernel size) decides how rapid changes will be filtered and needs to be adjusted to each data set. To illustrate we compare 4 different values. For the sake of clarity, code that constitutes simple repetition of data treatment or plotting will be excluded, and axis labels in the tile plots removed.
 
 ```R
 source("mirrorbound.r") # Boundary condition routine
@@ -66,7 +66,7 @@ abline(a = 0, b = 0, col = "red")
 ```
 ![plot5](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/5.png)
 
-Not a great approximation of the baseline. The mean filter has issues with the large peaks from the smaller changes in the baseline. Also, since the peaks are closely spaced, they influence the mean enough to inflate the baseline, which results in the corrected curve not having its base at zero. 
+Not a great approximation of the baseline. The mean filter has issues with separating the large peaks from the smaller changes in the baseline. Also, since the peaks are closely spaced, they influence the mean enough to inflate the baseline, which results in the corrected curve not having its base at zero. 
 Side note: There exists a wealth of different linear filters with varying characteristics, which may be of interest for these applications. The interested reader is encouraged to dig further.
 
 
