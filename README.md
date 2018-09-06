@@ -10,7 +10,7 @@ Disclaimer 2: I will not cover the related problem of trend detection, i.e. dete
 The approaches I will cover here are: mean filter, median filter, polynomial interpolation and the morphological tophat.
 Side note: all 4 approaches require boundary conditions, meaning some way of handling the beginning and end of the data set. I picked "mirror" boundary conditions, which I will introduce at another time.
 
-Firstly, let's look at two different data sets. The first one is Long-Term Government Bond between Jan 1960 and Jan 2018, from the [Federal Reserve Economic Data, St Louis](https://fred.stlouisfed.org/).
+Firstly, let's look at two different data sets. The first one is South African Long-Term Government Bond Yields between Jan 1960 and Jan 2018, from the [Federal Reserve Economic Data, St Louis](https://fred.stlouisfed.org/).
 
 ```R
 sa_data <- read.table("sa_lt_govt_bond_yields.csv", sep = ",", header = T)
