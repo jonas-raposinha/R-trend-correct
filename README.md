@@ -28,7 +28,7 @@ plot(int_data$V3, main = "Fluorescence intensity over time", ylab = "Intensity (
 
 ![plot2](https://github.com/jonas-raposinha/R-trend-correct/blob/master/images/2.png)
 
-Next, we go through the approaches one by one, starting with the mean filter (aka moving average or blurring). This is a simple, linear low-pass filter that turns each data point into the mean of itself and its neighbours. The size of the neighbourhood that is considered (ie the filter kernel size) decides how rapid changes will be filtered and needs to be adjusted to each data set. To illustrate we compare 4 different values. For the sake of clarity, I will exclude code that constitutes simple repetition of data treatment or plotting, and remove axis labels in tile plots.
+Next, we go through the approaches one by one, starting with the mean filter (aka "moving average" or "blurring"). This is a simple, linear low-pass filter that turns each data point into the mean of itself and its neighbours. The size of the neighbourhood that is considered (ie the filter kernel size) decides how rapid changes will be filtered and needs to be adjusted to each data set. To illustrate we compare 4 different values. For the sake of clarity, I will exclude code that constitutes simple repetition of data treatment or plotting, and remove axis labels in tile plots.
 
 ```R
 source("mirrorbound.r") # Boundary condition routine
