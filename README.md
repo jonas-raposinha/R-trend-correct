@@ -8,7 +8,7 @@ What both cases have in common though, is that we need to separate the trend or 
 Disclaimer 1: As always, the more we know about our data (signal characteristics, noise frequencies, sampling procedure etc), the better informed our choice of processing approach will be. Thus, automatic trend extraction or baseline correction will often fall short for some types of data, while working well on others.
 Disclaimer 2: I will not cover the related problem of trend detection, i.e. determining whether or not a statistically significant trend exists in the data set.
 The approaches I will cover here are: mean filter, median filter, polynomial interpolation and the morphological tophat.
-Side note: all 4 approaches require boundary conditions, meaning some way of handling the beginning and end of the data set. I picked "mirror" boundary conditions, which I will introduce at another time.
+Side note: all 4 approaches require boundary conditions, meaning some way of handling the beginning and end of the data set. I picked "mirror" boundary conditions, which I briefly discuss [here](https://github.com/jonas-raposinha/R-mirrorbound).
 
 Firstly, let's look at two different data sets. The first one is South African Long-Term Government Bond Yields between Jan 1960 and Jan 2018, from the [Federal Reserve Economic Data, St Louis](https://fred.stlouisfed.org/).
 
